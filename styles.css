@@ -1,0 +1,100 @@
+/* Hacking Style */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+body {
+    font-family: 'Share Tech Mono', monospace;
+    background-color: #000;
+    color: #00ff00;
+    text-align: center;
+    transition: background 0.3s, color 0.3s;
+}
+
+/* Top Right Button */
+.top-right {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.reset-btn {
+    padding: 8px 12px;
+    border: none;
+    background: red;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.reset-btn:hover {
+    background: darkred;
+}
+
+/* Container */
+.container {
+    width: 90%;
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 12px;
+    background: #111;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+}
+
+/* Cipher Key Box */
+.cipher-box {
+    background: #222;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.cipher-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Section Box */
+.section-box {
+    background: #222;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+/* Row Layout */
+.row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+textarea {
+    width: 50%;
+    height: 80px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #00ff00;
+    resize: none;
+    background: #111;
+    color: #00ff00;
+}
+
+/* Buttons */
+button {
+    padding: 10px 15px;
+    margin: 5px;
+    background: #00ff00;
+    color: black;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #009900;
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryptify</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="top-right">
+        <button class="reset-btn" onclick="resetFields()">Reset Fields 🔄</button>
+    </div>
+
+    <div class="container">
+        <h1>🟢 Encryptify - Secret Mode</h1>
+
+        <!-- Cipher Key Box -->
+        <div class="cipher-box">
+            <h2>Cipher Key</h2>
+            <p id="currentKey">Default Key</p>
+            <div class="cipher-buttons">
+                <button onclick="downloadCipherKey()">Download Key 🔑</button>
+                <input type="file" id="uploadKey" onchange="uploadCipherKey()" />
+                <button onclick="resetCipherKey()">Reset Key 🔄</button>
+            </div>
+        </div>
+
+        <!-- Encryption Section -->
+        <div class="section-box">
+            <h2>Encrypt Message 🔒</h2>
+            <div class="row">
+                <textarea id="plainText" placeholder="Enter text..."></textarea>
+                <textarea id="cipherText" placeholder="Encrypted output..." readonly></textarea>
+            </div>
+            <button onclick="encryptMessage()">Encrypt</button>
+            <button onclick="copyToClipboard('cipherText')">Copy 📋</button>
+            <button onclick="downloadText('cipherText', 'encrypted_text.txt')">Download ⬇️</button>
+        </div>
+
+        <!-- Decryption Section -->
+        <div class="section-box">
+            <h2>Decrypt Message 🔓</h2>
+            <div class="row">
+                <textarea id="decryptInput" placeholder="Enter encrypted text..."></textarea>
+                <textarea id="decryptedText" placeholder="Decrypted output..." readonly></textarea>
+            </div>
+            <button onclick="decryptMessage()">Decrypt</button>
+            <button onclick="copyToClipboard('decryptedText')">Copy 📋</button>
+            <button onclick="downloadText('decryptedText', 'decrypted_text.txt')">Download ⬇️</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
