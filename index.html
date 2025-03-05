@@ -3,53 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encryptify</title>
+    <title>Encryptify - Secret Message</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <div class="top-right">
-        <button class="reset-btn" onclick="resetFields()">Reset Fields 🔄</button>
-    </div>
+    <!-- Display User IP -->
+    <div id="user-ip">Your IP is: Fetching...</div>
+
+    <!-- Floating Reset Fields Button (Always Accessible) -->
+    <button id="resetFieldsBtn" onclick="resetFields()">Reset Fields</button>
 
     <div class="container">
-        <h1>🟢 Encryptify - Secret Mode</h1>
+        <h1>🔐 Encryptify - Secert Message</h1>
 
-        <!-- Cipher Key Box -->
-        <div class="cipher-box">
-            <h2>Cipher Key</h2>
+        <!-- Cipher Key Management (Moved to Top) -->
+        <div class="key-box">
+            <h2>🗝️ Cipher Key</h2>
             <p id="currentKey">Default Key</p>
-            <div class="cipher-buttons">
-                <button onclick="downloadCipherKey()">Download Key 🔑</button>
-                <input type="file" id="uploadKey" onchange="uploadCipherKey()" />
-                <button onclick="resetCipherKey()">Reset Key 🔄</button>
-            </div>
+            <button onclick="downloadCipherKey()">Download Key</button>
+
+            <label class="custom-file-upload">
+                <input type="file" id="uploadKey" onchange="uploadCipherKey()"> Choose Custom Key
+            </label>
+
+            <button onclick="resetCipherKey()">Reset Key</button>
         </div>
 
-        <!-- Encryption Section -->
-        <div class="section-box">
-            <h2>Encrypt Message 🔒</h2>
-            <div class="row">
-                <textarea id="plainText" placeholder="Enter text..."></textarea>
-                <textarea id="cipherText" placeholder="Encrypted output..." readonly></textarea>
+        <!-- Encrypt Section -->
+        <div class="box">
+            <h2>Encrypt Message</h2>
+            <div class="input-container">
+                <textarea id="plainText" placeholder="Enter text..." oninput="realTimeEncrypt()"></textarea>
+                <textarea id="cipherText" placeholder="Encrypted text..." readonly></textarea>
             </div>
-            <button onclick="encryptMessage()">Encrypt</button>
-            <button onclick="copyToClipboard('cipherText')">Copy 📋</button>
-            <button onclick="downloadText('cipherText', 'encrypted_text.txt')">Download ⬇️</button>
+            <button onclick="pasteText('plainText')">Paste</button>
+            <button onclick="copyToClipboard('cipherText')">Copy</button>
+            <button onclick="downloadText('cipherText', 'encrypted_text.txt')">Download</button>
         </div>
 
-        <!-- Decryption Section -->
-        <div class="section-box">
-            <h2>Decrypt Message 🔓</h2>
-            <div class="row">
-                <textarea id="decryptInput" placeholder="Enter encrypted text..."></textarea>
-                <textarea id="decryptedText" placeholder="Decrypted output..." readonly></textarea>
+        <!-- Decrypt Section -->
+        <div class="box">
+            <h2>Decrypt Message</h2>
+            <div class="input-container">
+                <textarea id="decryptInput" placeholder="Enter encrypted text..." oninput="realTimeDecrypt()"></textarea>
+                <textarea id="decryptedText" placeholder="Decrypted text..." readonly></textarea>
             </div>
-            <button onclick="decryptMessage()">Decrypt</button>
-            <button onclick="copyToClipboard('decryptedText')">Copy 📋</button>
-            <button onclick="downloadText('decryptedText', 'decrypted_text.txt')">Download ⬇️</button>
+            <button onclick="pasteText('decryptInput')">Paste</button>
+            <button onclick="copyToClipboard('decryptedText')">Copy</button>
+            <button onclick="downloadText('decryptedText', 'decrypted_text.txt')">Download</button>
         </div>
     </div>
+
+    <!-- Page Visit Counter -->
+    <div id="visit-counter">Page Visits: <span id="counter">0</span></div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Project Encrypted by <a href="https://github.com/ARSN72/" target="_blank">Arshan Mansuri</a></p>
+        <p><a href="https://github.com/ARSN72/Encryptify" target="_blank">Fork us</a></p>
+    </footer>
 
     <script src="script.js"></script>
 </body>

@@ -12,7 +12,7 @@ function loadKey() {
     }
 }
 
-// Generate a new cipher key
+// Generate new key
 function generateKey() {
     key = chars.split("");
     key.sort(() => Math.random() - 0.5);
@@ -20,47 +20,23 @@ function generateKey() {
     document.getElementById("currentKey").innerText = "Default Key";
 }
 
-// Real-time Encrypt Message
-function realTimeEncrypt() {
-    let plainText = document.getElementById("plainText").value;
-    let cipherText = "";
-
-    for (let letter of plainText) {
-        let index = chars.indexOf(letter);
-        cipherText += index !== -1 ? key[index] : letter;
+// Upload Cipher Key
+function uploadCipherKey() {
+    const file = document.getElementById("uploadKey").files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            try {
+                key = JSON.parse(event.target.result);
+                localStorage.setItem("cipherKey", JSON.stringify(key));
+                document.getElementById("currentKey").innerText = "Custom Key (Uploaded)";
+                alert("Cipher Key Uploaded Successfully!");
+            } catch (error) {
+                alert("Invalid Cipher Key file! Please upload a valid key.");
+            }
+        };
+        reader.readAsText(file);
     }
-
-    document.getElementById("cipherText").value = cipherText;
-}
-
-// Real-time Decrypt Message
-function realTimeDecrypt() {
-    let cipherText = document.getElementById("decryptInput").value;
-    let plainText = "";
-
-    for (let letter of cipherText) {
-        let index = key.indexOf(letter);
-        plainText += index !== -1 ? chars[index] : letter;
-    }
-
-    document.getElementById("decryptedText").value = plainText;
-}
-
-// Copy text function
-function copyToClipboard(id) {
-    let text = document.getElementById(id).value;
-    navigator.clipboard.writeText(text).then(() => {
-        alert("Copied to clipboard!");
-    });
-}
-
-// Download text function
-function downloadText(id, filename) {
-    let blob = new Blob([document.getElementById(id).value], { type: "text/plain" });
-    let link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = filename;
-    link.click();
 }
 
 // Download Cipher Key
@@ -72,39 +48,24 @@ function downloadCipherKey() {
     link.click();
 }
 
-// Upload Custom Cipher Key
-function uploadCipherKey() {
-    let fileInput = document.getElementById("uploadKey");
-    let file = fileInput.files[0];
-
-    if (file) {
-        let reader = new FileReader();
-        reader.onload = function (event) {
-            try {
-                let uploadedKey = JSON.parse(event.target.result);
-                if (Array.isArray(uploadedKey) && uploadedKey.length === chars.length) {
-                    key = uploadedKey;
-                    localStorage.setItem("cipherKey", JSON.stringify(key));
-                    document.getElementById("currentKey").innerText = "Custom Key (Uploaded)";
-                    alert("✅ Cipher Key successfully uploaded!");
-                } else {
-                    alert("⚠️ Invalid cipher key file!");
-                }
-            } catch (error) {
-                alert("❌ Error: Invalid file format!");
-            }
-        };
-        reader.readAsText(file);
+// Reset Cipher Key with Confirmation
+function resetCipherKey() {
+    if (confirm("Are you sure you want to reset the Cipher Key? This action cannot be undone!")) {
+        generateKey();
+        alert("Cipher Key has been reset successfully!");
     }
 }
 
-// Reset Cipher Key
-function resetCipherKey() {
-    let confirmReset = confirm("⚠️ Are you sure? This will reset the encryption key and old messages can't be decrypted!");
-    if (confirmReset) {
-        generateKey();
-        alert("🔑 Cipher Key has been reset successfully!");
-    }
+// Real-time Encrypt
+function realTimeEncrypt() {
+    let plainText = document.getElementById("plainText").value;
+    document.getElementById("cipherText").value = [...plainText].map(letter => key[chars.indexOf(letter)] || letter).join("");
+}
+
+// Real-time Decrypt
+function realTimeDecrypt() {
+    let cipherText = document.getElementById("decryptInput").value;
+    document.getElementById("decryptedText").value = [...cipherText].map(letter => chars[key.indexOf(letter)] || letter).join("");
 }
 
 // Reset Fields
@@ -115,9 +76,44 @@ function resetFields() {
     document.getElementById("decryptedText").value = "";
 }
 
-// Attach real-time encryption & decryption
-document.getElementById("plainText").addEventListener("input", realTimeEncrypt);
-document.getElementById("decryptInput").addEventListener("input", realTimeDecrypt);
+// Copy to Clipboard
+function copyToClipboard(id) {
+    let text = document.getElementById(id);
+    text.select();
+    document.execCommand("copy");
+    alert("Copied to clipboard!");
+}
 
-// Load Key on Start
+// Paste from Clipboard
+function pasteText(id) {
+    navigator.clipboard.readText()
+        .then(text => {
+            document.getElementById(id).value = text;
+        })
+        .catch(err => {
+            alert("Failed to paste! Clipboard permission required.");
+        });
+}
+
+// Function to download Encrypted/Decrypted text as a file
+function downloadText(id, fileName) {
+    let text = document.getElementById(id).value;
+    if (text.trim() === "") {
+        alert("Nothing to download! Please enter text first.");
+        return;
+    }
+    
+    let blob = new Blob([text], { type: "text/plain" });
+    let link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
+}
+
+
+// Get IPv4 Address
+fetch('https://api.ipify.org?format=json')
+    .then(response => response.json())
+    .then(data => document.getElementById("user-ip").innerText = "Your IP is: " + data.ip);
+
 loadKey();
