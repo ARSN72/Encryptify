@@ -50,9 +50,9 @@ function downloadCipherKey() {
 
 // Reset Cipher Key with Confirmation
 function resetCipherKey() {
-    if (confirm("Are you sure you want to reset the Cipher Key? This action cannot be undone!")) {
+    if (confirm("⚠️ Are you sure? This will reset the encryption key and old messages can't be decrypted!")) {
         generateKey();
-        alert("Cipher Key has been reset successfully!");
+        alert("Cipher Key has been reset successfully & New encryption key generated!!");
     }
 }
 
@@ -117,3 +117,19 @@ fetch('https://api.ipify.org?format=json')
     .then(data => document.getElementById("user-ip").innerText = "Your IP is: " + data.ip);
 
 loadKey();
+
+// Function to update and display the visit count
+function updatePageVisits() {
+    let visits = localStorage.getItem("pageVisits");
+    if (visits === null) {
+        visits = 1;
+    } else {
+        visits = parseInt(visits) + 1;
+    }
+    localStorage.setItem("pageVisits", visits);
+    document.getElementById("visit-counter").innerText = "Page Visits: " + visits;
+}
+
+// Run the function when the page loads
+updatePageVisits();
+
